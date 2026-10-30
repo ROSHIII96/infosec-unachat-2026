@@ -1,4 +1,4 @@
-name: Desplegar chat en Render
+name: CI/CD - Pruebas y Despliegue en Render
 
 on:
   push:
@@ -8,13 +8,39 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  # 1. Job de pruebas (CI)
+  test:
+    name: Ejecutar pruebas del chat
     runs-on: ubuntu-latest
     steps:
-      - name: Solicitar despliegue
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas unitarias (Mocha)
+        run: npm test
+
+      - name: Pruebas de integración (Jest)
+        run: npm run test:integration
+
+  # 2. Job de despliegue (CD) - Solo si 'test' es exitoso
+  deploy:
+    name: Desplegar en Render
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Solicitar despliegue a Render
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          curl --fail --silent --show-error --output /dev/null \
-            --get --data-urlencode "ref=${GITHUB_SHA}" \
+          curl --fail --silent --show-error \
+            --request POST \
             "$RENDER_DEPLOY_HOOK_URL"
