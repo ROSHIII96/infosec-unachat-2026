@@ -14,7 +14,8 @@ describe('unalib', function () {
   describe('is_valid_phone', function () {
 
     it('should accept a phone number with a dash', function () {
-      expect(val.is_valid_phone('8297-8547')).to.equal(true);
+      // Fallo intencional para verificar bloqueo de despliegue
+      expect(val.is_valid_phone('8297-8547')).to.equal(false);
     });
 
     it('should reject a phone number that contains a letter', function () {
