@@ -1,3 +1,6 @@
+﻿
+require('./instrument');
+const Sentry = require('@sentry/node');
 
 // npm install para descargar los paquetes...
 
@@ -12,6 +15,13 @@ var port = process.env.PORT || 3000;
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+
+// TEMPORAL: ruta para provocar un error de prueba (retirar luego)
+app.get('/debug-sentry', function(req, res){
+  throw new Error('Error de prueba Sentry - UNA Chat');
+});
+
+Sentry.setupExpressErrorHandler(app);
 
 // escuchar una conexion por socket
 io.on('connection', function(socket){
@@ -31,3 +41,4 @@ if (require.main === module) {
 }
 
 module.exports = http;
+
