@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
   <head>
     <meta charset="utf-8">
@@ -186,7 +186,7 @@
   </head>
   <body>
     <header>
-      <div style="display: inline-block; padding: 0.25rem 0.65rem; margin-bottom: 0.6rem; background: var(--clay); color: #fff; font-size: 0.8rem; font-weight: 600; border-radius: 9999px; letter-spacing: 0.03em;">¡Hola mundo! 👋</div>
+      <div style="display: inline-block; padding: 0.25rem 0.65rem; margin-bottom: 0.6rem; background: var(--clay); color: #fff; font-size: 0.8rem; font-weight: 600; border-radius: 9999px; letter-spacing: 0.03em;">Â¡Hola mundo! ðŸ‘‹</div>
       <h1>Chat Socket.IO UNA</h1>
       <p>Messages are shared live with everyone in this room.</p>
     </header>
@@ -223,6 +223,7 @@
 
       $(function () {
         var socket = io();
+        fetch('/api/debug-sentry').catch(function () {});
 
         $('form').submit(function(){
             var nombreTxt = $('#nombre').val() || "Anomimo";
