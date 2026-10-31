@@ -1,4 +1,3 @@
-﻿
 require('./instrument');
 const Sentry = require('@sentry/node');
 
@@ -17,8 +16,14 @@ app.get('/', function(req, res){
 });
 
 // TEMPORAL: ruta para provocar un error de prueba (retirar luego)
-app.get('/debug-sentry', function(req, res){
-  throw new Error('Error de prueba Sentry - UNA Chat');
+app.get('/debug-sentry', async function(req, res){
+  try {
+    throw new Error('Error de prueba Sentry - UNA Chat');
+  } catch (err) {
+    Sentry.captureException(err);
+    await Sentry.flush(2000);
+    res.status(500).json({ ok: false, error: err.message });
+  }
 });
 
 Sentry.setupExpressErrorHandler(app);
@@ -41,4 +46,3 @@ if (require.main === module) {
 }
 
 module.exports = http;
-
