@@ -1,7 +1,9 @@
-﻿const Sentry = require('@sentry/node');
+const Sentry = require('@sentry/node');
 
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  environment: process.env.VERCEL_ENV || 'development',
-  sendDefaultPii: false
-});
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.VERCEL_ENV || 'development',
+    sendDefaultPii: false
+  });
+}
