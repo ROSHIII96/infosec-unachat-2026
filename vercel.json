@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/debug-sentry",
+      "destination": "/api/debug-sentry"
+    }
+  ]
+}
